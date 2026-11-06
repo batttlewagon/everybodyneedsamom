@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mentor Sign-In — Everyone Needs a Mom</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌼</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark">♥</span> Mentor Room</a>
+    <nav class="nav">
+      <a href="index.html">Client page</a>
+      <button class="nav-btn hidden" id="signout-btn" type="button">Sign out</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ================= SIGN-IN ================= -->
+  <section id="signin-view">
+    <div class="wrap narrow">
+      <div class="card signin-card">
+        <div class="signin-icon">🌼</div>
+        <h1>Welcome back, <span data-mentor-name>Mom</span></h1>
+        <p>Sign in to start your video sessions and see your appointments.</p>
+
+        <form id="signin-form" novalidate>
+          <div class="field wide">
+            <label for="password">Your password</label>
+            <div class="pw-row">
+              <input id="password" type="password" autocomplete="current-password" autofocus>
+              <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Show password">Show</button>
+            </div>
+          </div>
+          <label class="check small-check">
+            <input type="checkbox" id="keep-signed-in" checked>
+            <span>Keep me signed in on this computer</span>
+          </label>
+          <button class="btn btn-big full" id="signin-btn" type="submit">Sign in</button>
+          <p class="error" id="signin-error" role="alert"></p>
+        </form>
+        <p class="muted">Forgot your password? Ask Rose to reset it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="dashboard" class="hidden">
+    <div class="wrap">
+      <div class="dash-hello">
+        <h1>Hi <span data-mentor-name>Mom</span> 👋</h1>
+        <p id="today"></p>
+      </div>
+
+      <!-- Video -->
+      <div class="card gate">
+        <div class="section-title">
+          <span class="step-dot dot-sky">🎥</span>
+          <h2>Video session</h2>
+        </div>
+        <p>Press the button, click <b>Allow</b> for your camera and microphone, then <b>Join</b>. Your client will appear when they come in.</p>
+        <p><button class="btn btn-big" id="start-video">Start my video room</button></p>
+        <div class="video-box" id="mentor-video">
+          <div class="video-placeholder"><div><h3>Your video room opens here</h3><p>Press the big button above.</p></div></div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <!-- Appointments -->
+        <div class="card calendar">
+          <div class="section-title">
+            <span class="step-dot dot-mint">📅</span>
+            <h2>Appointments</h2>
+          </div>
+          <div class="stack">
+            <a class="btn btn-mint full" href="https://app.cal.com/bookings/upcoming" target="_blank" rel="noopener">See my upcoming appointments ↗</a>
+            <a class="btn btn-outline full" href="https://app.cal.com/availability" target="_blank" rel="noopener">Change my available hours ↗</a>
+            <a class="btn btn-outline full" id="book-for-client" href="index.html#book" target="_blank" rel="noopener">Book a time for a client ↗</a>
+          </div>
+          <p class="muted">The first time, Cal.com asks you to sign in. After that it remembers you. New bookings also show up in your Google Calendar.</p>
+        </div>
+
+        <!-- Client code -->
+        <div class="card code-card">
+          <div class="section-title">
+            <span class="step-dot dot-coral">🔑</span>
+            <h2>Client code</h2>
+          </div>
+          <p>Clients need this code to enter your video room. People who book online get it automatically.</p>
+          <p class="big-code" id="client-code">—</p>
+          <p>To invite a client directly, send them this link. The code is already in it:</p>
+          <p class="mono" id="client-link"></p>
+          <p><button class="btn btn-sky" id="copy-link" type="button">Copy client link</button> <span id="copied" class="copied hidden">Copied! ✓</span></p>
+        </div>
+      </div>
+
+      <!-- Advanced (for Rose) -->
+      <details class="card advanced">
+        <summary>Change the client code or password (for Rose)</summary>
+        <p>Fill in the boxes, press <b>Make new settings</b>, then replace everything in <code>secrets.js</code> on GitHub with the text it gives you. The old code stops working as soon as GitHub updates (about a minute).</p>
+        <div class="field wide"><label for="adv-room">Video room link (Daily)</label><input id="adv-room" type="url" placeholder="https://yourname.daily.co/room-name"></div>
+        <div class="field wide"><label for="adv-code">Client code</label><input id="adv-code" type="text" autocomplete="off"></div>
+        <p><button class="btn btn-outline" id="adv-suggest" type="button">Suggest a new code</button></p>
+        <div class="field wide"><label for="adv-pass">Mentor password (current or new, required)</label><input id="adv-pass" type="text" autocomplete="off"></div>
+        <p style="margin-top:16px"><button class="btn" id="adv-make" type="button">Make new settings</button></p>
+        <p class="error" id="adv-error"></p>
+        <textarea id="adv-out" class="mono out hidden" rows="10" readonly></textarea>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap"><span>Private mentor page for Everyone Needs a Mom.</span><span><a data-main-site href="https://everyoneneedsamom.com">Main site ↗</a></span></div>
+</footer>
+
+<script src="config.js"></script>
+<script src="secrets.js"></script>
+<script src="https://unpkg.com/@daily-co/daily-js"></script>
+<script src="app.js"></script>
+<script>
+(function () {
+  var E = window.ENAM, C = window.SITE_CONFIG || {}, S = window.SITE_SECRETS || {};
+  var signinView = document.getElementById("signin-view");
+  var dash = document.getElementById("dashboard");
+  var signoutBtn = document.getElementById("signout-btn");
+  var vault = null;
+
+  function showDashboard(v) {
+    vault = v;
+    signinView.classList.add("hidden");
+    dash.classList.remove("hidden");
+    signoutBtn.classList.remove("hidden");
+    document.getElementById("today").textContent = new Date().toLocaleDateString(undefined,
+      { weekday: "long", month: "long", day: "numeric" });
+    var code = v.sessionCode || "";
+    document.getElementById("client-code").textContent = code || "(not set)";
+    var link = new URL("./", location.href).href + (code ? "?code=" + encodeURIComponent(code) : "");
+    document.getElementById("client-link").textContent = link;
+    if (C.calLink) document.getElementById("book-for-client").href = "https://cal.com/" + C.calLink;
+    document.getElementById("adv-room").value = v.roomUrl || "";
+    document.getElementById("adv-code").value = code;
+  }
+
+  // Already signed in on this computer?
+  var saved = E.getMentor();
+  if (saved) showDashboard(saved);
+
+  document.getElementById("pw-toggle").addEventListener("click", function () {
+    var pw = document.getElementById("password");
+    var show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    this.textContent = show ? "Hide" : "Show";
+  });
+
+  document.getElementById("signin-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var err = document.getElementById("signin-error");
+    var btn = document.getElementById("signin-btn");
+    var pw = document.getElementById("password").value.trim();
+    err.textContent = "";
+    if (!pw) { err.textContent = "Please type your password."; return; }
+    btn.disabled = true; btn.textContent = "Signing in…";
+    var v = await E.unlock(S.mentorVault, pw);
+    btn.disabled = false; btn.textContent = "Sign in";
+    if (!v) { err.textContent = "That password isn't right. Check Caps Lock and try again."; return; }
+    E.saveMentor(v, document.getElementById("keep-signed-in").checked);
+    document.getElementById("password").value = "";
+    showDashboard(v);
+  });
+
+  signoutBtn.addEventListener("click", function () {
+    E.forgetMentor();
+    location.reload();
+  });
+
+  document.getElementById("start-video").addEventListener("click", function () {
+    E.startVideo("mentor-video", {
+      url: vault && vault.roomUrl,
+      userName: C.mentorName,
+      goodbye: "<div><h3>Session ended 🌼</h3><p>Press the button above to start another.</p></div>"
+    });
+    document.getElementById("mentor-video").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  document.getElementById("copy-link").addEventListener("click", async function () {
+    var text = document.getElementById("client-link").textContent;
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) {
+      var r = document.createRange(); r.selectNodeContents(document.getElementById("client-link"));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand("copy");
+    }
+    var ok = document.getElementById("copied"); ok.classList.remove("hidden");
+    setTimeout(function () { ok.classList.add("hidden"); }, 2500);
+  });
+
+  // ---- Advanced: make new encrypted settings ----
+  var WORDS = ["SUNNY","DAISY","MAPLE","HONEY","CLOVER","MEADOW","BREEZE","ROBIN","PEACH","WILLOW","LILAC","COCOA","PEBBLE","HARBOR","LANTERN","POPPY","CEDAR","MARIGOLD","SPARROW","TULIP"];
+  document.getElementById("adv-suggest").addEventListener("click", function () {
+    var n = new Uint32Array(2); crypto.getRandomValues(n);
+    document.getElementById("adv-code").value = WORDS[n[0] % WORDS.length] + "-" + String(1000 + (n[1] % 9000));
+  });
+  document.getElementById("adv-make").addEventListener("click", async function () {
+    var err = document.getElementById("adv-error"); err.textContent = "";
+    var room = document.getElementById("adv-room").value.trim();
+    var code = E.normCode(document.getElementById("adv-code").value);
+    var pass = document.getElementById("adv-pass").value.trim();
+    if (!pass || pass.length < 8) { err.textContent = "Please enter a password of at least 8 characters."; return; }
+    if (!code || code.length < 6) { err.textContent = "Please enter a client code of at least 6 characters."; return; }
+    this.disabled = true; this.textContent = "Working…";
+    var out = {
+      lockedRoom: room ? await E.lock({ roomUrl: room }, code) : null,
+      mentorVault: await E.lock({ roomUrl: room, sessionCode: code }, pass)
+    };
+    this.disabled = false; this.textContent = "Make new settings";
+    var box = document.getElementById("adv-out");
+    box.value = "/* Locked settings. Generated on the mentor page; do not edit by hand. */\nwindow.SITE_SECRETS = " +
+      JSON.stringify(out, null, 2) + ";\n";
+    box.classList.remove("hidden"); box.select();
+  });
+})();
+</script>
+</body>
+</html>

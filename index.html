@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Sessions with Mom — Everyone Needs a Mom</title>
+  <meta name="description" content="Live one-on-one video sessions with Elisa, your step-in mom from Everyone Needs a Mom. Book a time, then join right here.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌼</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="index.html"><span class="logo-mark">♥</span> Everyone Needs a Mom</a>
+    <nav class="nav">
+      <a href="index.html" aria-current="page">Video Session</a>
+      <a href="#book">Book</a>
+      <a href="about.html">About <span data-mentor-name>Elisa</span></a>
+      <a data-main-site href="https://everyoneneedsamom.com">Main Site ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="hero wrap">
+    <h1>Time with Mom,<br>face to face.</h1>
+    <p>Live one-on-one video sessions with <b data-mentor-name>Elisa</b>, your step-in mom. Book a time below, then join right here on this page. Nothing to download.</p>
+    <div class="hero-badges">
+      <span class="badge">💛 Warm &amp; caring</span>
+      <span class="badge">🎥 Video right in your browser</span>
+      <span class="badge">📅 Easy online booking</span>
+    </div>
+  </div>
+
+  <!-- ============ VIDEO ============ -->
+  <section id="session">
+    <div class="wrap">
+
+      <!-- Agreement gate -->
+      <div class="card gate" id="gate">
+        <div class="section-title">
+          <span class="step-dot dot-sky">🎥</span>
+          <h2>Join your video session</h2>
+        </div>
+        <p>Already booked? Welcome, sweetheart! Please read and agree to the items below, then your video room will open.<br>
+           <b>New here?</b> <a href="#book">Book a time first</a>.</p>
+
+        <p class="fee-note"><b>Session fee:</b> <span id="fee-text">Sessions are paid securely when you book in the calendar below.</span></p>
+
+        <form id="gate-form" novalidate>
+          <div class="gate-steps">
+            <label class="check">
+              <input type="checkbox" id="agree-age" required>
+              <span><b>I am 18 years of age or older.</b></span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="agree-terms" required>
+              <span>I have read and agree to the <a href="terms.html" target="_blank">Session Agreement &amp; Disclaimer</a>. I understand these sessions are personal mentoring and caring conversation only, <b>not legal, medical, financial, or mental-health advice</b>, and that I am responsible for my own decisions. To the fullest extent the law allows, I agree not to hold <span data-mentor-fullname>the mentor</span> legally responsible for anything said during a session.</span>
+            </label>
+            <label class="check">
+              <input type="checkbox" id="agree-paid" required>
+              <span>I have booked and paid for this session (or Mom invited me directly).</span>
+            </label>
+          </div>
+
+          <div class="gate-steps">
+            <div class="field">
+              <label for="your-name">Your first name (shown on video)</label>
+              <input id="your-name" type="text" autocomplete="given-name" placeholder="e.g. Jamie">
+            </div>
+            <div class="field" id="code-wrap">
+              <label for="session-code">Session code (in your booking email)</label>
+              <input id="session-code" type="text" autocomplete="off" autocapitalize="characters" placeholder="e.g. DAISY-1234">
+            </div>
+          </div>
+
+          <button class="btn btn-big" id="join-btn" type="submit">Start my video session →</button>
+          <p class="error" id="gate-error" role="alert"></p>
+        </form>
+      </div>
+
+      <!-- Video room (shown after agreeing) -->
+      <div class="card hidden" id="video-section">
+        <div class="section-title">
+          <span class="step-dot dot-sky">🎥</span>
+          <h2>Your video session</h2>
+        </div>
+        <p>When asked, click <b>Allow</b> so your camera and microphone can turn on. Then click <b>Join</b>. Mom will be right with you.</p>
+        <div class="video-box" id="video-box">
+          <div class="video-placeholder"><div><h3>Opening your room…</h3></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ CALENDAR ============ -->
+  <section id="book">
+    <div class="wrap">
+      <div class="card calendar">
+        <div class="section-title">
+          <span class="step-dot dot-mint">📅</span>
+          <h2>Book a session</h2>
+        </div>
+        <p>Choose a day and time that works for you. You'll pay securely when you book, and your confirmation email will have your link and session code.</p>
+        <div id="cal-inline"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span data-year>2026</span> Everyone Needs a Mom · <a href="terms.html">Session Agreement &amp; Disclaimer</a> · <a href="signin.html">Mentor sign-in</a></span>
+    <span>Questions? <a data-email href="mailto:heymom@everyoneneedsamom.com">heymom@everyoneneedsamom.com</a></span>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="secrets.js"></script>
+<script src="https://unpkg.com/@daily-co/daily-js"></script>
+<script src="app.js"></script>
+</body>
+</html>
