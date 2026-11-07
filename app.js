@@ -1,4 +1,4 @@
-/* Everyone Needs a Mom — shared page logic
+/* Everybody Needs a Mom — shared page logic
    Locked settings (video room link, client code) are encrypted with
    AES-256-GCM. The key comes from a password or code (PBKDF2-SHA-256),
    so the room link never appears in the page source in readable form. */
@@ -11,8 +11,10 @@
   function each(sel, fn) { document.querySelectorAll(sel).forEach(fn); }
   each("[data-mentor-name]", function (el) { el.textContent = C.mentorName || "Mom"; });
   each("[data-mentor-fullname]", function (el) { el.textContent = C.mentorFullName || C.mentorName || "the mentor"; });
-  each("[data-email]", function (el) { el.textContent = C.contactEmail; el.href = "mailto:" + C.contactEmail; });
-  each("[data-main-site]", function (el) { el.href = C.mainSiteUrl || "#"; });
+  each("[data-email]", function (el) {
+    if (C.contactEmail) { el.textContent = C.contactEmail; el.href = "mailto:" + C.contactEmail; }
+    else { var box = el.closest("p, span"); if (box) box.style.display = "none"; }
+  });
   each("[data-year]", function (el) { el.textContent = new Date().getFullYear(); });
   var feeNote = document.getElementById("fee-text");
   if (feeNote) {
@@ -151,6 +153,12 @@
   // ---------- Booking by email request (used until a Cal.com calendar is connected) ----------
   function renderRequestForm(el) {
     var who = C.mentorName || "Mom";
+    if (!C.contactEmail) {
+      el.style.minHeight = "0";
+      el.innerHTML = '<div class="setup-note"><h3>Booking opens very soon</h3><p>' + who +
+        "'s booking requests will open here shortly. Please check back soon!</p></div>";
+      return;
+    }
     var tzLabel = C.timeZoneLabel || "Eastern Time";
     var times = C.requestTimes || ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
       "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM"];
