@@ -5,8 +5,8 @@
    ============================================================ */
 
 window.SITE_CONFIG = {
-  mentorName: "Elisa",
-  mentorFullName: "Elisa Stella",
+  mentorName: "Shira",
+  mentorFullName: "Shira",
   contactEmail: "heymom@everyoneneedsamom.com",
   mainSiteUrl: "https://everyoneneedsamom.com",
 

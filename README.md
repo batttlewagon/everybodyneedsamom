@@ -1,20 +1,20 @@
 # Everyone Needs a Mom: Video Sessions
 
-Live one-on-one video sessions with Elisa, plus booking, a mentor sign-in, and her dashboard.
+Live one-on-one video sessions with Shira, plus booking, a mentor sign-in, and her dashboard.
 Lives at **meet.everyoneneedsamom.com**. The main WordPress site at everyoneneedsamom.com is untouched.
 
 | Page | Who | What it does |
 |---|---|---|
 | `index.html` | Clients | Agree to 18+ and the disclaimer, enter the session code, and the 2-way video opens on the page. Booking calendar below. |
-| `about.html` | Everyone | About Elisa. |
+| `about.html` | Everyone | About Shira. |
 | `terms.html` | Everyone | Session Agreement & Disclaimer. |
-| `signin.html` | Elisa | Password sign-in, then her dashboard: **Start my video room**, appointments, client code and link. |
+| `signin.html` | Shira | Password sign-in, then her dashboard: **Start my video room**, appointments, client code and link. |
 | `config.js` | — | Plain settings (name, email, booking link, price text). |
 | `secrets.js` | — | **Encrypted** settings: the video room link and client code. Never edit by hand. |
 
 ## How it stays private
 - The video room link is encrypted (AES-256) with the **client code**. Without the code, the link can't be read from the page.
-- Elisa's dashboard data is encrypted with **her password**. Wrong password, no dashboard.
+- Shira's dashboard data is encrypted with **her password**. Wrong password, no dashboard.
 - Clients get the code automatically in their booking confirmation (it's part of the meeting link Cal.com sends after they book and pay).
 - To change the code or password: sign in → *Change the client code or password (for Rose)* → paste the result into `secrets.js`.
 - This stops casual visitors. It's not bank-grade: a short code could be guessed offline by someone determined. Change the code every few months, or right away if it leaks.
