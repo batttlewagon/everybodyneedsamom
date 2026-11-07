@@ -16,8 +16,13 @@
   each("[data-year]", function (el) { el.textContent = new Date().getFullYear(); });
   var feeNote = document.getElementById("fee-text");
   if (feeNote) {
-    feeNote.textContent = (C.sessionPrice ? C.sessionPrice + ", paid" : "Sessions are paid") +
-      " securely when you book in the calendar below.";
+    feeNote.textContent = C.calLink
+      ? (C.sessionPrice ? C.sessionPrice + ", paid" : "Sessions are paid") + " securely when you book in the calendar below."
+      : (C.sessionPrice ? C.sessionPrice + ". " : "") + (C.mentorName || "Mom") + " will send payment details when she confirms your session.";
+  }
+  var bookIntro = document.getElementById("book-intro");
+  if (bookIntro && !C.calLink) {
+    bookIntro.textContent = "Tell " + (C.mentorName || "Mom") + " when you'd like to meet. She'll reply by email to confirm your time, with your session link and code.";
   }
 
   // ---------- Encryption helpers ----------
@@ -143,15 +148,68 @@
     });
   }
 
+  // ---------- Booking by email request (used until a Cal.com calendar is connected) ----------
+  function renderRequestForm(el) {
+    var who = C.mentorName || "Mom";
+    var tzLabel = C.timeZoneLabel || "Eastern Time";
+    var times = C.requestTimes || ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
+      "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM"];
+    var now = new Date();
+    var min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    el.style.minHeight = "0";
+    el.innerHTML =
+      '<form id="request-form" novalidate>' +
+      '<div class="request-grid">' +
+      '<div class="field"><label for="rq-name">Your name</label><input id="rq-name" type="text" autocomplete="name"></div>' +
+      '<div class="field"><label for="rq-email">Your email</label><input id="rq-email" type="email" autocomplete="email"></div>' +
+      '<div class="field"><label for="rq-date">Preferred day</label><input id="rq-date" type="date" min="' + min + '"></div>' +
+      '<div class="field"><label for="rq-time">Preferred time (' + tzLabel + ')</label><select id="rq-time">' +
+      times.map(function (t) { return "<option>" + t + "</option>"; }).join("") + "</select></div>" +
+      "</div>" +
+      '<div class="field wide"><label for="rq-note">Anything you\'d like ' + who + ' to know? (optional)</label><textarea id="rq-note" rows="3"></textarea></div>' +
+      '<label class="check small-check"><input type="checkbox" id="rq-age"><span>I am 18 or older and agree to the <a href="terms.html" target="_blank">Session Agreement &amp; Disclaimer</a>.</span></label>' +
+      '<button class="btn" type="submit">Send my request</button>' +
+      '<p class="error" id="rq-error" role="alert"></p>' +
+      '<div id="rq-done" class="setup-note hidden"></div>' +
+      "</form>";
+    document.getElementById("request-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var err = document.getElementById("rq-error");
+      var name = document.getElementById("rq-name").value.trim();
+      var email = document.getElementById("rq-email").value.trim();
+      var day = document.getElementById("rq-date").value;
+      var time = document.getElementById("rq-time").value;
+      var note = document.getElementById("rq-note").value.trim();
+      err.textContent = "";
+      if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !day) {
+        err.textContent = "Please add your name, a valid email, and a preferred day."; return;
+      }
+      if (!document.getElementById("rq-age").checked) {
+        err.textContent = "Please confirm you are 18 or older and agree to the Session Agreement."; return;
+      }
+      var dayText = new Date(day + "T12:00:00").toLocaleDateString("en-US",
+        { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+      var subject = "Video session request: " + dayText + ", " + time + " " + tzLabel;
+      var body = "Hi " + who + ",\n\nI'd like to book a video session.\n\n" +
+        "Name: " + name + "\nEmail: " + email + "\nPreferred day: " + dayText +
+        "\nPreferred time: " + time + " " + tzLabel + (note ? "\nNote: " + note : "") +
+        "\n\nI am 18 or older and agree to the Session Agreement & Disclaimer.\n\nThank you!\n" + name;
+      var done = document.getElementById("rq-done");
+      done.innerHTML = "<h3>Almost done!</h3><p>Your email app should open with your request ready to send. " +
+        "If it didn't, copy the message below and email it to <a href='mailto:" + C.contactEmail + "'>" + C.contactEmail + "</a>.</p>" +
+        '<textarea class="mono out" rows="8" readonly></textarea>';
+      done.querySelector("textarea").value = "Subject: " + subject + "\n\n" + body;
+      done.classList.remove("hidden");
+      window.location.href = "mailto:" + C.contactEmail + "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  }
+
   // ---------- Booking calendar (Cal.com inline embed) ----------
   var calEl = document.getElementById("cal-inline");
   if (calEl) {
     if (!C.calLink) {
-      calEl.innerHTML =
-        '<div class="setup-note"><h3>Online booking is coming very soon</h3>' +
-        '<p>In the meantime, email <a href="mailto:' + C.contactEmail + '">' + C.contactEmail +
-        "</a> and Mom will find a time with you.</p></div>";
-      calEl.style.minHeight = "0";
+      renderRequestForm(calEl);
     } else {
       (function (W, A, L) {
         var p = function (a, ar) { a.q.push(ar); };

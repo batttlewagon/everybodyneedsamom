@@ -77,12 +77,19 @@
             <span class="step-dot dot-mint">📅</span>
             <h2>Appointments</h2>
           </div>
-          <div class="stack">
+          <div id="cal-tools"><div class="stack">
             <a class="btn btn-mint full" href="https://app.cal.com/bookings/upcoming" target="_blank" rel="noopener">See my upcoming appointments ↗</a>
             <a class="btn btn-outline full" href="https://app.cal.com/availability" target="_blank" rel="noopener">Change my available hours ↗</a>
             <a class="btn btn-outline full" id="book-for-client" href="index.html#book" target="_blank" rel="noopener">Book a time for a client ↗</a>
           </div>
           <p class="muted">The first time, Cal.com asks you to sign in. After that it remembers you. New bookings also show up in your Google Calendar.</p>
+          </div>
+          <div id="email-booking" class="hidden">
+            <p>Clients ask for a time on the client page, and their request comes to <a data-email href="mailto:heymom@everyoneneedsamom.com">heymom@everyoneneedsamom.com</a>.</p>
+            <p>To confirm, reply with this message. Fill in the parts in [brackets]:</p>
+            <textarea id="confirm-msg" class="mono out" rows="10" readonly></textarea>
+            <p><button class="btn btn-mint" id="copy-confirm" type="button">Copy confirmation message</button> <span id="copied-confirm" class="copied hidden">Copied! ✓</span></p>
+          </div>
         </div>
 
         <!-- Client code -->
@@ -91,7 +98,7 @@
             <span class="step-dot dot-coral">🔑</span>
             <h2>Client code</h2>
           </div>
-          <p>Clients need this code to enter your video room. People who book online get it automatically.</p>
+          <p>Clients need this code to enter your video room. It's already inside the client link below, so clients who use the link never have to type it.</p>
           <p class="big-code" id="client-code">—</p>
           <p>To invite a client directly, send them this link. The code is already in it:</p>
           <p class="mono" id="client-link"></p>
@@ -143,6 +150,14 @@
     var link = new URL("./", location.href).href + (code ? "?code=" + encodeURIComponent(code) : "");
     document.getElementById("client-link").textContent = link;
     if (C.calLink) document.getElementById("book-for-client").href = "https://cal.com/" + C.calLink;
+    var hasCal = !!C.calLink;
+    document.getElementById("cal-tools").classList.toggle("hidden", !hasCal);
+    document.getElementById("email-booking").classList.toggle("hidden", hasCal);
+    document.getElementById("confirm-msg").value = "Hi [their name],\n\n" +
+      "Your video session with " + (C.mentorName || "me") + " is confirmed for [day and time] Eastern Time.\n\n" +
+      "When it's time, open this link:\n" + link + "\n\n" +
+      "Tick the three boxes, press \"Start my video session\", and click Allow for your camera and microphone. I'll see you there!\n\n" +
+      "Payment: [how to pay]\n\nWith love,\n" + (C.mentorName || "Mom");
     document.getElementById("adv-room").value = v.roomUrl || "";
     document.getElementById("adv-code").value = code;
   }
@@ -196,6 +211,14 @@
       var s = getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand("copy");
     }
     var ok = document.getElementById("copied"); ok.classList.remove("hidden");
+    setTimeout(function () { ok.classList.add("hidden"); }, 2500);
+  });
+
+  document.getElementById("copy-confirm").addEventListener("click", async function () {
+    var box = document.getElementById("confirm-msg");
+    try { await navigator.clipboard.writeText(box.value); }
+    catch (e) { box.select(); document.execCommand("copy"); }
+    var ok = document.getElementById("copied-confirm"); ok.classList.remove("hidden");
     setTimeout(function () { ok.classList.add("hidden"); }, 2500);
   });
 
