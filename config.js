@@ -7,7 +7,7 @@
 window.SITE_CONFIG = {
   mentorName: "Shira",
   mentorFullName: "Shira",
-  contactEmail: "",   // Shira's email for booking requests and questions
+  contactEmail: "shira.delluria@gmail.com",   // Shira's email for booking requests and questions
 
   // Booking calendar: the part of the Cal.com link after "cal.com/",
   // e.g. "shira/video-session". Leave "" until it's ready.

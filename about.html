@@ -4,67 +4,65 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About Shira — Everybody Needs a Mom</title>
-  <meta name="description" content="Meet Shira, your step-in mom for live video sessions at Everybody Needs a Mom.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌼</text></svg>">
+  <meta name="description" content="Meet Shira, your step-in mom for private video and phone calls.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%23A65A3A'/></svg>">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jost:400,500&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap">
-    <a class="logo" href="index.html"><span class="logo-mark">♥</span> Everybody Needs a Mom</a>
-    <nav class="nav">
-      <a href="index.html">Video Session</a>
-      <a href="index.html#book">Book</a>
+    <a class="logo" href="index.html">Everybody Needs a Mom</a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#book">Schedule</a>
+      <a href="index.html#session">Join a video call</a>
       <a href="about.html" aria-current="page">About <span data-mentor-name>Shira</span></a>
     </nav>
   </div>
 </header>
 
 <main>
-  <section>
-    <div class="wrap">
-      <div class="card">
-        <div class="about-grid">
-          <div class="photo">
-            <img src="shira.avif"
-                 alt="Shira smiling at sunset in Florida"
-                 onerror="var p=this.parentNode; this.remove(); p.textContent='♥';">
-          </div>
+  <div class="wrap about-grid">
+    <figure class="portrait">
+      <img src="shira.avif" alt="Shira smiling at sunset in Florida" width="360" height="360" onerror="this.closest('figure').remove();">
+      <figcaption><span data-mentor-name>Shira</span> &middot; Florida</figcaption>
+    </figure>
 
-          <div>
-            <h1>Hi, I'm <span data-mentor-fullname>Shira</span>.</h1>
+    <div>
+      <span class="eyebrow">About</span>
+      <h1>Hi, I&rsquo;m <span data-mentor-fullname>Shira</span>.</h1>
+      <p class="lead">I&rsquo;m a mom, and I live in sunny Florida. I know how much it means to have someone in your corner: someone who checks in, really listens, and cheers for every win, big or small.</p>
+      <p>That&rsquo;s what I&rsquo;d love to be for you. Whether you&rsquo;re missing a mother&rsquo;s love because of loss, distance, or a broken relationship, or you&rsquo;re simply going through a lonely stretch, you don&rsquo;t have to go through it alone.</p>
+      <p>Our calls are a chance to sit down together, by video or by phone. Tell me what&rsquo;s on your heart, celebrate your wins, talk through the hard days, and leave knowing someone is in your corner.</p>
 
-            <p>I'm a mom, and I live in sunny Florida. I know how much it means to have someone in your corner: someone who checks in, really listens, and cheers for every win, big or small.</p>
-            <p>That's what I'd love to be for you. Whether you're missing a mother's love because of loss, distance, or a broken relationship, or you're simply going through a lonely stretch, you don't have to go through it alone.</p>
-            <p>Our video sessions are a chance to sit down together, face to face. Tell me what's on your heart, celebrate your wins, talk through the hard days, and leave knowing someone is in your corner.</p>
+      <h3>Things we can talk about</h3>
+      <ul class="tag-list">
+        <li>Everyday life &amp; growing up</li>
+        <li>Work &amp; school</li>
+        <li>Family &amp; relationships</li>
+        <li>Loneliness</li>
+        <li>Big decisions</li>
+        <li>Good news to celebrate</li>
+      </ul>
 
-            <h3>Things we can talk about</h3>
-            <ul class="pill-list">
-              <li>Everyday life &amp; growing up</li>
-              <li>Work &amp; school</li>
-              <li>Family &amp; relationships</li>
-              <li>Loneliness</li>
-              <li>Big decisions</li>
-              <li>Good news to celebrate!</li>
-            </ul>
-
-            <p style="margin-top:1.6em">
-              <a class="btn" href="index.html#book">Book a time with me</a>
-            </p>
-            <p>Questions first? Email <a data-email href="#"></a>.</p>
-            <p class="signoff">With love, Shira 💛</p>
-          </div>
-        </div>
+      <div class="hero-actions">
+        <a class="btn" href="index.html#book">Schedule a video or phone call</a>
+        <span class="small muted">Questions first? <a data-email href="#"></a></span>
       </div>
+      <p class="signoff">With love, <span data-mentor-name>Shira</span></p>
     </div>
-  </section>
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
-    <span>© <span data-year>2026</span> Everybody Needs a Mom · <a href="terms.html">Session Agreement &amp; Disclaimer</a> · <a href="signin.html">Mentor sign-in</a></span>
-    <span>Questions? <a data-email href="#"></a></span>
+    <span>&copy; <span data-year>2026</span> Everybody Needs a Mom</span>
+    <span class="footer-links">
+      <a href="terms.html">Session Agreement</a>
+      <a href="signin.html">Mentor sign-in</a>
+    </span>
   </div>
 </footer>
 

@@ -3,106 +3,132 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Video Sessions with Mom — Everybody Needs a Mom</title>
-  <meta name="description" content="Live one-on-one video sessions with Shira, your step-in mom from Everybody Needs a Mom. Book a time, then join right here.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌼</text></svg>">
+  <title>Meet Mom, face to face — Everybody Needs a Mom</title>
+  <meta name="description" content="Private one-on-one time with Shira, your step-in mom, by video or phone. Schedule a call and meet face to face.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='28' fill='%23A65A3A'/></svg>">
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jost:400,500&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap">
-    <a class="logo" href="index.html"><span class="logo-mark">♥</span> Everybody Needs a Mom</a>
-    <nav class="nav">
-      <a href="index.html" aria-current="page">Video Session</a>
-      <a href="#book">Book</a>
+    <a class="logo" href="index.html">Everybody Needs a Mom</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#book">Schedule</a>
+      <a href="#session">Join a video call</a>
       <a href="about.html">About <span data-mentor-name>Shira</span></a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="hero wrap">
-    <h1>Time with Mom,<br>face to face.</h1>
-    <p>Live one-on-one video sessions with <b data-mentor-name>Shira</b>, your step-in mom. Book a time below, then join right here on this page. Nothing to download.</p>
-    <div class="hero-badges">
-      <span class="badge">💛 Warm &amp; caring</span>
-      <span class="badge">🎥 Video right in your browser</span>
-      <span class="badge">📅 Easy online booking</span>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Video &amp; phone sessions</span>
+        <h1>Meet Mom, face&nbsp;to&nbsp;face.</h1>
+        <p class="lead">Private one-on-one time with <span data-mentor-name>Shira</span>, your step-in mom. Choose a video or phone call, pick a time, and she&rsquo;ll confirm by email. Nothing to download.</p>
+        <div class="hero-actions">
+          <a class="btn btn-big" href="#book">Schedule a video or phone call</a>
+          <a class="link-arrow" href="#session">I have a video link &rarr;</a>
+        </div>
+      </div>
+      <figure class="portrait">
+        <img src="shira.avif" alt="Shira smiling at sunset in Florida" width="360" height="360" onerror="this.closest('figure').remove();">
+        <figcaption><span data-mentor-name>Shira</span> &middot; Florida</figcaption>
+      </figure>
     </div>
+  </section>
+
+  <div class="wrap">
+    <ol class="steps" aria-label="How it works">
+      <li class="step">
+        <span class="step-num">01</span>
+        <h3>Choose a time</h3>
+        <p>Pick a video or phone call and a time that suits you. <span data-mentor-name>Shira</span> replies by email to confirm.</p>
+      </li>
+      <li class="step">
+        <span class="step-num">02</span>
+        <h3>Get your confirmation</h3>
+        <p>Video calls come with a private link and session code. For phone calls, <span data-mentor-name>Shira</span> calls the number you give.</p>
+      </li>
+      <li class="step">
+        <span class="step-num">03</span>
+        <h3>Talk it through</h3>
+        <p>At your time, open your link and join, or pick up when the phone rings.</p>
+      </li>
+    </ol>
   </div>
 
-  <!-- ============ VIDEO ============ -->
-  <section id="session">
-    <div class="wrap">
+  <!-- ============ JOIN ============ -->
+  <section class="section" id="session">
+    <div class="wrap split" id="gate">
+      <div>
+        <span class="eyebrow">Video call</span>
+        <h2>Join your video call</h2>
+        <p class="muted">Already booked? Welcome back. Confirm the three points, and your private room opens on this page.</p>
+        <p class="small muted">Not booked yet? <a href="#book">Schedule a call first.</a></p>
+      </div>
 
-      <!-- Agreement gate -->
-      <div class="card gate" id="gate">
-        <div class="section-title">
-          <span class="step-dot dot-sky">🎥</span>
-          <h2>Join your video session</h2>
-        </div>
-        <p>Already booked? Welcome, sweetheart! Please read and agree to the items below, then your video room will open.<br>
-           <b>New here?</b> <a href="#book">Book a time first</a>.</p>
-
-        <p class="fee-note"><b>Session fee:</b> <span id="fee-text">Sessions are paid securely when you book in the calendar below.</span></p>
-
+      <div class="panel">
         <form id="gate-form" novalidate>
-          <div class="gate-steps">
+          <div class="checks">
             <label class="check">
               <input type="checkbox" id="agree-age" required>
               <span><b>I am 18 years of age or older.</b></span>
             </label>
             <label class="check">
               <input type="checkbox" id="agree-terms" required>
-              <span>I have read and agree to the <a href="terms.html" target="_blank">Session Agreement &amp; Disclaimer</a>. I understand these sessions are personal mentoring and caring conversation only, <b>not legal, medical, financial, or mental-health advice</b>, and that I am responsible for my own decisions. To the fullest extent the law allows, I agree not to hold <span data-mentor-fullname>the mentor</span> legally responsible for anything said during a session.</span>
+              <span>I have read and agree to the <a href="terms.html" target="_blank">Session Agreement &amp; Disclaimer</a>. These sessions are personal mentoring and caring conversation only, not legal, medical, financial, or mental-health advice. I am responsible for my own decisions and, to the fullest extent the law allows, I will not hold <span data-mentor-fullname>the mentor</span> legally responsible for anything said during a session.</span>
             </label>
             <label class="check">
               <input type="checkbox" id="agree-paid" required>
-              <span>I have booked and paid for this session (or Mom invited me directly).</span>
+              <span>I have booked and paid for this session, or <span data-mentor-name>Shira</span> invited me directly.</span>
             </label>
           </div>
 
-          <div class="gate-steps">
+          <div class="request-grid">
             <div class="field">
-              <label for="your-name">Your first name (shown on video)</label>
-              <input id="your-name" type="text" autocomplete="given-name" placeholder="e.g. Jamie">
+              <label for="your-name">Your first name</label>
+              <input id="your-name" type="text" autocomplete="given-name" placeholder="Shown on the video">
             </div>
             <div class="field" id="code-wrap">
-              <label for="session-code">Session code (in your booking email)</label>
-              <input id="session-code" type="text" autocomplete="off" autocapitalize="characters" placeholder="e.g. DAISY-1234">
+              <label for="session-code">Session code</label>
+              <input id="session-code" type="text" autocomplete="off" autocapitalize="characters" placeholder="From your confirmation">
             </div>
           </div>
 
-          <button class="btn btn-big" id="join-btn" type="submit">Start my video session →</button>
+          <button class="btn btn-big full" id="join-btn" type="submit">Enter the video room</button>
           <p class="error" id="gate-error" role="alert"></p>
         </form>
       </div>
+    </div>
 
-      <!-- Video room (shown after agreeing) -->
-      <div class="card hidden" id="video-section">
-        <div class="section-title">
-          <span class="step-dot dot-sky">🎥</span>
-          <h2>Your video session</h2>
-        </div>
-        <p>When asked, click <b>Allow</b> so your camera and microphone can turn on. Then click <b>Join</b>. Mom will be right with you.</p>
-        <div class="video-box" id="video-box">
-          <div class="video-placeholder"><div><h3>Opening your room…</h3></div></div>
-        </div>
+    <div class="wrap hidden" id="video-section">
+      <div class="video-head">
+        <span class="eyebrow">Video call</span>
+        <h2>Your video room</h2>
+        <p class="muted">When your browser asks, choose <b>Allow</b> for the camera and microphone, then select <b>Join</b>.</p>
       </div>
-
+      <div class="video-box" id="video-box">
+        <div class="video-placeholder"><div><h3>Opening your room&hellip;</h3></div></div>
+      </div>
     </div>
   </section>
 
-  <!-- ============ CALENDAR ============ -->
-  <section id="book">
-    <div class="wrap">
-      <div class="card calendar">
-        <div class="section-title">
-          <span class="step-dot dot-mint">📅</span>
-          <h2>Book a session</h2>
-        </div>
-        <p id="book-intro">Choose a day and time that works for you. You'll pay securely when you book, and your confirmation email will have your link and session code.</p>
+  <!-- ============ BOOK ============ -->
+  <section class="section" id="book">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Schedule</span>
+        <h2>Schedule a video or phone call</h2>
+        <p class="muted" id="book-intro">Choose a day and time that works for you. You'll pay securely when you book, and your confirmation email will have your link and session code.</p>
+        <p class="note" id="fee-text">Sessions are paid securely when you book.</p>
+        <p class="small muted">All times are Eastern Time (Florida).</p>
+      </div>
+      <div class="panel">
         <div id="cal-inline"></div>
       </div>
     </div>
@@ -111,8 +137,12 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span>© <span data-year>2026</span> Everybody Needs a Mom · <a href="terms.html">Session Agreement &amp; Disclaimer</a> · <a href="signin.html">Mentor sign-in</a></span>
-    <span>Questions? <a data-email href="#"></a></span>
+    <span>&copy; <span data-year>2026</span> Everybody Needs a Mom</span>
+    <span class="footer-links">
+      <a href="terms.html">Session Agreement</a>
+      <a href="signin.html">Mentor sign-in</a>
+      <span>Questions? <a data-email href="#"></a></span>
+    </span>
   </div>
 </footer>
 

@@ -6,11 +6,12 @@
   var C = window.SITE_CONFIG || {};
   var S = window.SITE_SECRETS || {};
   var enc = new TextEncoder(), dec = new TextDecoder();
+  var WHO = C.mentorName || "Mom";
 
   // ---------- Fill in names, email, links ----------
   function each(sel, fn) { document.querySelectorAll(sel).forEach(fn); }
-  each("[data-mentor-name]", function (el) { el.textContent = C.mentorName || "Mom"; });
-  each("[data-mentor-fullname]", function (el) { el.textContent = C.mentorFullName || C.mentorName || "the mentor"; });
+  each("[data-mentor-name]", function (el) { el.textContent = WHO; });
+  each("[data-mentor-fullname]", function (el) { el.textContent = C.mentorFullName || WHO; });
   each("[data-email]", function (el) {
     if (C.contactEmail) { el.textContent = C.contactEmail; el.href = "mailto:" + C.contactEmail; }
     else { var box = el.closest("p, span"); if (box) box.style.display = "none"; }
@@ -19,12 +20,13 @@
   var feeNote = document.getElementById("fee-text");
   if (feeNote) {
     feeNote.textContent = C.calLink
-      ? (C.sessionPrice ? C.sessionPrice + ", paid" : "Sessions are paid") + " securely when you book in the calendar below."
-      : (C.sessionPrice ? C.sessionPrice + ". " : "") + (C.mentorName || "Mom") + " will send payment details when she confirms your session.";
+      ? (C.sessionPrice ? C.sessionPrice + ", paid" : "Sessions are paid") + " securely when you book."
+      : (C.sessionPrice ? C.sessionPrice + ". " : "") + WHO + " will send payment details when she confirms your call.";
   }
   var bookIntro = document.getElementById("book-intro");
   if (bookIntro && !C.calLink) {
-    bookIntro.textContent = "Tell " + (C.mentorName || "Mom") + " when you'd like to meet. She'll reply by email to confirm your time, with your session link and code.";
+    bookIntro.textContent = "Choose a video or phone call and a time that suits you. " + WHO +
+      " replies by email to confirm. Video calls come with your private link and session code.";
   }
 
   // ---------- Encryption helpers ----------
@@ -65,8 +67,8 @@
     var box = document.getElementById(boxId);
     if (!box) return;
     if (!opts.url) {
-      setPlaceholder(box, "<div><h3>The video room isn't connected yet</h3><p>Please try again a little later, or email <a style='color:#FFD23F' href='mailto:" +
-        C.contactEmail + "'>" + C.contactEmail + "</a>.</p></div>");
+      setPlaceholder(box, "<div><h3>The video room isn't connected yet</h3><p>Please try again a little later" +
+        (C.contactEmail ? ", or email <a href='mailto:" + C.contactEmail + "'>" + C.contactEmail + "</a>" : "") + ".</p></div>");
       return;
     }
     if (!window.DailyIframe) {
@@ -83,7 +85,7 @@
     callFrame.join({ url: opts.url, userName: opts.userName || undefined });
     callFrame.on("left-meeting", function () {
       callFrame.destroy(); callFrame = null;
-      setPlaceholder(box, opts.goodbye || "<div><h3>Thanks for spending time together today 🌼</h3><p>You can book your next session in the calendar below.</p></div>");
+      setPlaceholder(box, opts.goodbye || "<div><h3>Thank you for meeting today.</h3><p>You can schedule your next call below.</p></div>");
     });
   }
 
@@ -111,11 +113,13 @@
     var codeInput = document.getElementById("session-code");
     if (!needCode) document.getElementById("code-wrap").classList.add("hidden");
 
-    // Code arrives pre-filled from the link in the booking email: ?code=XXXX
+    // Code arrives pre-filled from the link in the confirmation email: ?code=XXXX
     var params = new URLSearchParams(location.search);
     if (params.get("code")) {
       codeInput.value = normCode(params.get("code"));
-      try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) { }
+      try { history.replaceState(null, "", location.pathname + "#session"); } catch (e) { }
+      var sessionEl = document.getElementById("session");
+      if (sessionEl) setTimeout(function () { sessionEl.scrollIntoView(); }, 50);
     }
 
     var boxes = gateForm.querySelectorAll("input[type=checkbox]");
@@ -132,12 +136,12 @@
       var roomUrl = C.dailyRoomUrl;
       if (needCode) {
         var code = normCode(codeInput.value);
-        if (!code) { err.textContent = "Please enter the session code from your booking email."; codeInput.focus(); return; }
+        if (!code) { err.textContent = "Please enter the session code from your confirmation email."; codeInput.focus(); return; }
         btn.disabled = true; btn.textContent = "Checking your code…";
         var opened = await unlock(S.lockedRoom, code);
         btn.textContent = btnLabel; refresh();
         if (!opened || !opened.roomUrl) {
-          err.textContent = "That code doesn't match. Check your booking email (or the link Mom sent you) and try again.";
+          err.textContent = "That code doesn't match. Check your confirmation email, or the link " + WHO + " sent you, and try again.";
           return;
         }
         roomUrl = opened.roomUrl;
@@ -152,11 +156,9 @@
 
   // ---------- Booking by email request (used until a Cal.com calendar is connected) ----------
   function renderRequestForm(el) {
-    var who = C.mentorName || "Mom";
     if (!C.contactEmail) {
-      el.style.minHeight = "0";
-      el.innerHTML = '<div class="setup-note"><h3>Booking opens very soon</h3><p>' + who +
-        "'s booking requests will open here shortly. Please check back soon!</p></div>";
+      el.innerHTML = '<div class="setup-note"><h3>Scheduling opens very soon</h3><p>' + WHO +
+        "'s booking requests will open here shortly. Please check back soon.</p></div>";
       return;
     }
     var tzLabel = C.timeZoneLabel || "Eastern Time";
@@ -164,27 +166,43 @@
       "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM"];
     var now = new Date();
     var min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-    el.style.minHeight = "0";
     el.innerHTML =
       '<form id="request-form" novalidate>' +
+      '<fieldset class="choice"><legend>Type of call</legend><div class="choice-row">' +
+      '<label class="choice-opt"><input type="radio" name="rq-type" value="Video call" checked><span>Video call<small>Face to face, here on the site</small></span></label>' +
+      '<label class="choice-opt"><input type="radio" name="rq-type" value="Phone call"><span>Phone call<small>' + WHO + ' calls you</small></span></label>' +
+      "</div></fieldset>" +
       '<div class="request-grid">' +
       '<div class="field"><label for="rq-name">Your name</label><input id="rq-name" type="text" autocomplete="name"></div>' +
       '<div class="field"><label for="rq-email">Your email</label><input id="rq-email" type="email" autocomplete="email"></div>' +
+      "</div>" +
+      '<div class="field hidden" id="rq-phone-wrap"><label for="rq-phone">Your phone number</label><input id="rq-phone" type="tel" autocomplete="tel" placeholder="So ' + WHO + ' can call you"></div>' +
+      '<div class="request-grid">' +
       '<div class="field"><label for="rq-date">Preferred day</label><input id="rq-date" type="date" min="' + min + '"></div>' +
       '<div class="field"><label for="rq-time">Preferred time (' + tzLabel + ')</label><select id="rq-time">' +
       times.map(function (t) { return "<option>" + t + "</option>"; }).join("") + "</select></div>" +
       "</div>" +
-      '<div class="field wide"><label for="rq-note">Anything you\'d like ' + who + ' to know? (optional)</label><textarea id="rq-note" rows="3"></textarea></div>' +
+      '<div class="field"><label for="rq-note">Anything you\'d like ' + WHO + ' to know? (optional)</label><textarea id="rq-note" rows="3"></textarea></div>' +
       '<label class="check small-check"><input type="checkbox" id="rq-age"><span>I am 18 or older and agree to the <a href="terms.html" target="_blank">Session Agreement &amp; Disclaimer</a>.</span></label>' +
-      '<button class="btn" type="submit">Send my request</button>' +
+      '<button class="btn btn-big" type="submit">Send my request</button>' +
       '<p class="error" id="rq-error" role="alert"></p>' +
       '<div id="rq-done" class="setup-note hidden"></div>' +
       "</form>";
-    document.getElementById("request-form").addEventListener("submit", function (e) {
+
+    var form = document.getElementById("request-form");
+    var phoneWrap = document.getElementById("rq-phone-wrap");
+    function callType() { return form.querySelector('input[name="rq-type"]:checked').value; }
+    form.querySelectorAll('input[name="rq-type"]').forEach(function (r) {
+      r.addEventListener("change", function () { phoneWrap.classList.toggle("hidden", callType() !== "Phone call"); });
+    });
+
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
       var err = document.getElementById("rq-error");
+      var type = callType();
       var name = document.getElementById("rq-name").value.trim();
       var email = document.getElementById("rq-email").value.trim();
+      var phone = document.getElementById("rq-phone").value.trim();
       var day = document.getElementById("rq-date").value;
       var time = document.getElementById("rq-time").value;
       var note = document.getElementById("rq-note").value.trim();
@@ -192,20 +210,23 @@
       if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !day) {
         err.textContent = "Please add your name, a valid email, and a preferred day."; return;
       }
+      if (type === "Phone call" && phone.replace(/\D/g, "").length < 7) {
+        err.textContent = "Please add a phone number so " + WHO + " can call you."; return;
+      }
       if (!document.getElementById("rq-age").checked) {
         err.textContent = "Please confirm you are 18 or older and agree to the Session Agreement."; return;
       }
       var dayText = new Date(day + "T12:00:00").toLocaleDateString("en-US",
         { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-      var subject = "Video session request: " + dayText + ", " + time + " " + tzLabel;
-      var body = "Hi " + who + ",\n\nI'd like to book a video session.\n\n" +
-        "Name: " + name + "\nEmail: " + email + "\nPreferred day: " + dayText +
-        "\nPreferred time: " + time + " " + tzLabel + (note ? "\nNote: " + note : "") +
+      var subject = type + " request: " + dayText + ", " + time + " " + tzLabel;
+      var body = "Hi " + WHO + ",\n\nI'd like to book a " + type.toLowerCase() + ".\n\n" +
+        "Name: " + name + "\nEmail: " + email + (type === "Phone call" ? "\nPhone: " + phone : "") +
+        "\nPreferred day: " + dayText + "\nPreferred time: " + time + " " + tzLabel + (note ? "\nNote: " + note : "") +
         "\n\nI am 18 or older and agree to the Session Agreement & Disclaimer.\n\nThank you!\n" + name;
       var done = document.getElementById("rq-done");
-      done.innerHTML = "<h3>Almost done!</h3><p>Your email app should open with your request ready to send. " +
+      done.innerHTML = "<h3>Almost done</h3><p>Your email app should open with your request ready to send. " +
         "If it didn't, copy the message below and email it to <a href='mailto:" + C.contactEmail + "'>" + C.contactEmail + "</a>.</p>" +
-        '<textarea class="mono out" rows="8" readonly></textarea>';
+        '<textarea class="mono out" rows="9" readonly></textarea>';
       done.querySelector("textarea").value = "Subject: " + subject + "\n\n" + body;
       done.classList.remove("hidden");
       window.location.href = "mailto:" + C.contactEmail + "?subject=" + encodeURIComponent(subject) +
@@ -237,7 +258,7 @@
       })(window, "https://app.cal.com/embed/embed.js", "init");
       Cal("init", { origin: "https://cal.com" });
       Cal("inline", { elementOrSelector: "#cal-inline", calLink: C.calLink, layout: "month_view" });
-      Cal("ui", { theme: "light", styles: { branding: { brandColor: "#FF6B6B" } }, hideEventTypeDetails: false, layout: "month_view" });
+      Cal("ui", { theme: "light", styles: { branding: { brandColor: "#A65A3A" } }, hideEventTypeDetails: false, layout: "month_view" });
     }
   }
 })();
