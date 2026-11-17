@@ -100,7 +100,7 @@ a:hover { color: var(--clay); }
 .hero-actions { display: flex; align-items: center; gap: 18px 28px; flex-wrap: wrap; margin-top: 34px; }
 .portrait { margin: 0; }
 .portrait img {
-  display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover;
+  display: block; width: 100%; height: auto;
   border-radius: var(--radius); background: var(--sand);
 }
 .portrait figcaption { margin-top: 12px; font-size: 0.85rem; color: var(--ink-3); letter-spacing: 0.06em; }
